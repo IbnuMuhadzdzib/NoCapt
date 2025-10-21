@@ -1,23 +1,67 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import ToggleTheme from './widgets/ToggleTheme';
+import ToggleTheme from '../widgets/ToggleTheme';
 
-import Dropdown from './components/Dropdown';
-
-import { generateCaption } from './lib/gemini';
+import Dropdown from '../components/Dropdown';
+import { supabase } from '../lib/supabase';
+import { generateCaption } from '../lib/gemini';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 // import i18next from 'i18next';
 
 function App() {
-    const { t, i18n } = useTranslation();
-
-
+  const { t, i18n } = useTranslation();
   const [image, setImage] = useState("");
   const [keyword, setKeyword] = useState("");
   const [language, setLanguage] = useState("");
   const [style, setStyle] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState();
+
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) setImage(droppedFile);
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) setImage(selectedFile);
+  };
+
+   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) navigate("/");
+      else setUser(user);
+    });
+  }, [navigate]);
+
+   const handleLogout = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error("Logout error:", error.message);
+    return;
+  }
+
+  setUser(null);
+  navigate("/"); // balik ke halaman login (Auth)
+};
+
 
   const handleGenerate = async (e) => {
   e.preventDefault();
@@ -43,10 +87,30 @@ function App() {
                     <li><button onClick={() => i18n.changeLanguage("en")}>en English</button></li>
                 </Dropdown>
         <form action="" onSubmit={handleGenerate}>
-            <input type="file" 
-                    accept='image/*'
-                    onChange={(e) => setImage(e.target.files[0])}
-                    className='cursor-pointer boder border-1 p-2 rounded-lg'/>
+             <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className={`border-2 border-dashed rounded-xl p-6 text-center transition ${
+        isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
+      }`}
+    >
+      <input
+        type="file"
+        id="fileInput"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      <label htmlFor="fileInput" className="cursor-pointer">
+        {image ? (
+          <p className="font-medium">{image.name}</p>
+        ) : (
+          <p className="text-gray-500">
+            Drag & drop file here or <span className="text-blue-600">browse</span>
+          </p>
+        )}
+      </label>
+    </div>
             <div>
               <textarea type="text"
                     value={keyword}
@@ -87,6 +151,10 @@ function App() {
             <p>{result}</p>
           </div>
         )}
+
+        <button onClick={handleLogout} className="btn btn-outline btn-error mt-4">
+          Logout
+        </button>
     </div>
   );
 }
