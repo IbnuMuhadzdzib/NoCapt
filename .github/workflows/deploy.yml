@@ -37,14 +37,14 @@ jobs:
 
       - name: Deploy to GitHub Pages (Production)
         if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v5
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
 
       - name: Deploy preview for develop (optional)
         if: github.ref == 'refs/heads/develop'
-        uses: peaceiris/actions-gh-pages@v5
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages-develop
