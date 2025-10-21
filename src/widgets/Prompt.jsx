@@ -26,17 +26,19 @@ export default function Prompt({
                 onChange={(e) => setKeyword(e.target.value)}
                 required />
 
-            <Input 
+            <div className='flex'> 
+                <Input 
                 placeholder={t("placeholder.language")}
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
                 required />
 
-            <Input
-                placeholder={t("placeholder.style")}
-                value={style}
-                onChange={(e) => setStyle(e.target.value)} 
-                required />
+                <Input
+                    placeholder={t("placeholder.style")}
+                    value={style}
+                    onChange={(e) => setStyle(e.target.value)} 
+                    required />
+            </div>
 
             <GenerateButton loading={loading} t={t} />
         </form>
