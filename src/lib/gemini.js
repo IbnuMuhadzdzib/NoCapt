@@ -14,7 +14,6 @@ function toBase64(file) {
 
 export async function generateCaption(imageFile, concept, language = "Indonesian", style) {
   const API_KEY = "AIzaSyCap4SbKpv4DQYS_pMHrSPC_ttcvMLnXuw";
-  const formData = new FormData();
 
   const requestBody = {
     contents: [

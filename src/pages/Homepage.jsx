@@ -20,7 +20,7 @@ export default function HomePage() {
   const [style, setStyle] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [, setUser] = useState(null);
 
   // cek user login
   useEffect(() => {
