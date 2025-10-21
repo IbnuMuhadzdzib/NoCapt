@@ -1,0 +1,11 @@
+{
+  "title": "Pembuat Caption",
+  "button": {
+    "generate": "Buat",
+    "generating": "Membuat..."
+  },
+  "placeholder": {
+    "concept": "Masukkan konsep caption Anda di sini...",
+    "language": "Pilih bahasa"
+  }
+}

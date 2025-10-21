@@ -1,0 +1,11 @@
+{
+  "title": "Caption Generator",
+  "button": {
+    "generate": "Generate",
+    "generating": "Generating..."
+  },
+  "placeholder": {
+    "concept": "Enter your caption concept here...",
+    "language": "Enter language"
+  }
+}
