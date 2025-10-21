@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import ToggleTheme from '../widgets/ToggleTheme';
+import Upload from '../widgets/Upload';
 
 import Dropdown from '../components/Dropdown';
 import { supabase } from '../lib/supabase';
@@ -11,35 +12,12 @@ import { useNavigate } from 'react-router-dom';
 
 function App() {
   const { t, i18n } = useTranslation();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [language, setLanguage] = useState("");
   const [style, setStyle] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState();
-
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) setImage(droppedFile);
-  };
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) setImage(selectedFile);
-  };
 
    const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -87,30 +65,7 @@ function App() {
                     <li><button onClick={() => i18n.changeLanguage("en")}>en English</button></li>
                 </Dropdown>
         <form action="" onSubmit={handleGenerate}>
-             <div
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className={`border-2 border-dashed rounded-xl p-6 text-center transition ${
-        isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
-      }`}
-    >
-      <input
-        type="file"
-        id="fileInput"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      <label htmlFor="fileInput" className="cursor-pointer">
-        {image ? (
-          <p className="font-medium">{image.name}</p>
-        ) : (
-          <p className="text-gray-500">
-            Drag & drop file here or <span className="text-blue-600">browse</span>
-          </p>
-        )}
-      </label>
-    </div>
+          <Upload setImage={setImage} />
             <div>
               <textarea type="text"
                     value={keyword}

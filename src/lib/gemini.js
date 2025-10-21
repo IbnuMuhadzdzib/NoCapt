@@ -42,6 +42,10 @@ export async function generateCaption(imageFile, concept, language = "Indonesian
       body: JSON.stringify(requestBody),
     }
   );
+    if (!imageFile) {
+    console.error("No image selected");
+    return;
+  }
 
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No caption generated.";
