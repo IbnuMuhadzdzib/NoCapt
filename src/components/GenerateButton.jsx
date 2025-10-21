@@ -1,15 +1,15 @@
-export default function GenerateButton({loading}) {
+export default function GenerateButton({loading, t}) {
     return (
          <button disabled={loading} className='btn cursor-pointer'>
               {loading ? 
               (
                 <p className='cursor-none'>
-                  Generating 
+                  {t("button.generating")}
                   <span className="loading loading-dots loading-xs ml-1"></span>
                 </p>
               )  
               : 
-              "Generate"
+              (t("button.generate"))
               }
             </button>
     )

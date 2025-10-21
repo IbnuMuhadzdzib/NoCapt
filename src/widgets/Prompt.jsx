@@ -38,7 +38,7 @@ export default function Prompt({
                 onChange={(e) => setStyle(e.target.value)} 
                 required />
 
-            <GenerateButton loading={loading}/>
+            <GenerateButton loading={loading} t={t} />
         </form>
     )
 }
