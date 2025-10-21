@@ -6,6 +6,7 @@
   },
   "placeholder": {
     "concept": "Enter your caption concept here...",
-    "language": "Enter language"
+    "language": "Enter language",
+    "style": "Select writing style"
   }
 }

@@ -6,6 +6,7 @@
   },
   "placeholder": {
     "concept": "Masukkan konsep caption Anda di sini...",
-    "language": "Pilih bahasa"
+    "language": "Pilih bahasa",
+    "style": "Pilih gaya penulisan"
   }
 }

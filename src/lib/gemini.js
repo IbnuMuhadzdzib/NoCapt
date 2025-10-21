@@ -12,7 +12,7 @@ function toBase64(file) {
 }
 
 
-export async function generateCaption(imageFile, concept, language = "Indonesian") {
+export async function generateCaption(imageFile, concept, language = "Indonesian", style) {
   const API_KEY = "AIzaSyCap4SbKpv4DQYS_pMHrSPC_ttcvMLnXuw";
   const formData = new FormData();
 
@@ -21,7 +21,7 @@ export async function generateCaption(imageFile, concept, language = "Indonesian
       {
         parts: [
           {
-            text: `Buatkan caption sosial media lengkap dengan hashtag dan caption tambahan misal harga dan juga link (jika diminta) yang sesuai dengan konsep yang saya berikan yaitu: ${concept}. kemudian pastikan caption tersebut singkat, menarik, kembalikan dalam struktur yang rapih serta mudah dibaca dan kirimkan hanya satu pilihan saja, juga hilangkan markdown dan tanda khusus, pisahkan juga satu pilihan dengan pilihan lainnnya, dan jangan gunakan bahasa yang absurd, gunakan bahasa ${language || "Indonesia"}, Kembalikan setiap opsi dipisah, singkat, menarik, tanpa markdown, pisahkan opsi dengan "|||" agar mudah di-split,.`
+            text: `Buatkan caption pada social media lengkap dengan hashtag berdasarkan gambar yang dikirimkan dengan konsep ${concept}, menggunakan bahasa ${language || "Indonesia"}, dan gaya penulisan ${style}. berikan hanya satu caption saja, usahakan buat caption yang agak singkat sampai menengah, buat semenarik mungkin dan juga sertakan hashtag yang relevan di akhir caption. hilangkan simbol simbol dan tanda baca seperti * yang tidak berguna. juga tampilkan tanpa penjelasan tambahan apapun, jangan tambahin hashtag yang aneh aneh. `,
           },
           {
             inline_data: {

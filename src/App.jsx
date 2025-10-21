@@ -6,29 +6,25 @@ import Dropdown from './components/Dropdown';
 
 import { generateCaption } from './lib/gemini';
 import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
+// import i18next from 'i18next';
 
 function App() {
     const { t, i18n } = useTranslation();
 
 
   const [image, setImage] = useState("");
-  const [concept, setConcept] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [language, setLanguage] = useState("");
+  const [style, setStyle] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState();
 
   const handleGenerate = async (e) => {
   e.preventDefault();
 
-  if (!image || !concept) {
-    alert("Gambar dan konsep wajib diisi ya!");
-    return;
-  }
-
   setLoading(true);
   try {
-    const caption = await generateCaption(image, concept, language);
+    const caption = await generateCaption(image, keyword, language, style);
     setResult(caption);
   } catch (err) {
     console.error(err);
@@ -51,15 +47,25 @@ function App() {
                     accept='image/*'
                     onChange={(e) => setImage(e.target.files[0])}
                     className='cursor-pointer boder border-1 p-2 rounded-lg'/>
-            <input type="text"
-                    value={concept}
-                    onChange={(e) => setConcept(e.target.value)}
+            <div>
+              <textarea type="text"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
                     placeholder={t("placeholder.concept")}
-                    className='boder border-1 p-2 rounded-lg' />
+                    className='textarea validator boder border-1 p-2 rounded-lg' 
+                    required/>
+              <div className="validator-hint">Column Can't be Empty</div>
+            </div>
             <input type="text"
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
                     placeholder={t("placeholder.language")}
+                    className='boder border-1 p-2 rounded-lg' />
+
+            <input type="text"
+                    value={style}
+                    onChange={(e) => setStyle(e.target.value)}
+                    placeholder={t("placeholder.style")}
                     className='boder border-1 p-2 rounded-lg' />
 
             <button disabled={loading} className='btn cursor-pointer'>
