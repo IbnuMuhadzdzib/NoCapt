@@ -40,7 +40,7 @@ export default function Prompt({
                     required />
             </div>
 
-            <GenerateButton loading={loading} t={t} />
+            <GenerateButton loading={loading} t={t} onClick={handleGenerate} />
         </form>
     )
 }

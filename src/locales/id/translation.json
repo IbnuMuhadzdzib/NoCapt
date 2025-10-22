@@ -2,7 +2,8 @@
   "title": "Pembuat Caption",
   "button": {
     "generate": "Buat",
-    "generating": "Membuat..."
+    "generating": "Membuat",
+    "regenerate": "Buat Ulang"
   },
   "placeholder": {
     "concept": "Masukkan konsep caption Anda di sini...",

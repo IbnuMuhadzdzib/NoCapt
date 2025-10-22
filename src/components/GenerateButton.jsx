@@ -1,6 +1,15 @@
-export default function GenerateButton({loading, t}) {
-    return (
-         <button disabled={loading} className='btn cursor-pointer'>
+import { useState } from "react"
+
+export default function GenerateButton({loading, t, onClick}) {  
+  const [afterClick, setAfterClick] = useState(false);
+
+  function handleClick() {
+    if (onClick) onClick();
+    setAfterClick(true);
+  }
+
+  return (
+         <button disabled={loading} onClick={handleClick} className='btn cursor-pointer'>
               {loading ? 
               (
                 <p className='cursor-none'>
@@ -9,7 +18,7 @@ export default function GenerateButton({loading, t}) {
                 </p>
               )  
               : 
-              (t("button.generate"))
+              afterClick ? t("button.regenerate") : t("button.generate")
               }
             </button>
     )

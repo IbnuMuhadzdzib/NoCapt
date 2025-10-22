@@ -2,7 +2,8 @@
   "title": "Caption Generator",
   "button": {
     "generate": "Generate",
-    "generating": "Generating..."
+    "generating": "Generating",
+    "regenerate": "Regenerate"
   },
   "placeholder": {
     "concept": "Enter your caption concept here...",
