@@ -1,4 +1,4 @@
-name: Build & Deploy React + Tailwind/DaisyUI
+name: Build & Deploy React + Tailwind/DaisyUI (NoCapt?)
 
 on:
   push:
