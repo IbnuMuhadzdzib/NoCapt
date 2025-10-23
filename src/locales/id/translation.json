@@ -1,5 +1,9 @@
 {
   "title": "Pembuat Caption",
+  "theme": {
+    "light": "☀️ Mode Terang",
+    "dark": "🌙 Mode Gelap"
+  },
   "button": {
     "generate": "Buat",
     "generating": "Membuat",

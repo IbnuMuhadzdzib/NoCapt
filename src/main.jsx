@@ -5,13 +5,18 @@ import './index.css'
 import Auth from './pages/Auth.jsx'
 import Homepage from './pages/Homepage.jsx'
 import './i18n.js'
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Auth />} />
-        <Route path="/home" element={<Homepage />} />
+        <Route path="/home" element={
+          <ProtectedRoute>
+            <Homepage />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

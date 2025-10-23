@@ -135,7 +135,13 @@ export default function AuthPage({ onLoginSuccess }) {
             alt="Google"
             className="w-5 h-5 mr-2"
           />
-          {loading ? "Loading..." : "Sign in with Google"}
+          {loading
+              ? isSignUp
+                ? "Creating Account..."
+                : "Signing In..."
+              : isSignUp
+              ? "Sign Up with Google"
+              : "Sign In with Google"}
         </button>
 
         <p className="text-center mt-4 text-sm">

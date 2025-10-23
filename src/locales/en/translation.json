@@ -1,5 +1,9 @@
 {
   "title": "Caption Generator",
+  "theme": {
+    "light": "☀️ Light Mode",
+    "dark": "🌙 Dark Mode"
+  },
   "button": {
     "generate": "Generate",
     "generating": "Generating",
