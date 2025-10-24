@@ -80,7 +80,7 @@ export default function AuthPage({ onLoginSuccess }) {
 
     checkSession();
     return () => listener.subscription.unsubscribe();
-  }, []);
+  }, [onLoginSuccess]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-200">

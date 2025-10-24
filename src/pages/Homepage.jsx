@@ -64,7 +64,7 @@ export default function HomePage() {
     const fileName = `${Date.now()}-${image.name}`;
     console.log("Uploading file:", fileName);
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("captions")
       .upload(fileName, image);
 
@@ -134,6 +134,26 @@ export default function HomePage() {
           >
             {saving ? "Saving..." : "Save Caption"}
           </button>
+
+          {imageUrl && (
+  <div className="mt-4 flex items-center gap-2">
+    <button
+      className="btn btn-outline btn-sm"
+      onClick={() => navigator.clipboard.writeText(imageUrl)}
+    >
+      Copy Image Link
+    </button>
+    <a
+      href={imageUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-outline btn-sm"
+    >
+      View Image
+    </a>
+  </div>
+)}
+
         </section>
       )}
 
