@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
 import { supabase } from "../lib/supabase";
+import { saveCaption } from "../lib/saveCaption";
 import { generateCaption } from "../lib/gemini";
 
 // widgets & components
@@ -14,46 +14,87 @@ export default function HomePage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
   const [image, setImage] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [language, setLanguage] = useState("");
   const [style, setStyle] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-  const [, setUser] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   // cek user login
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) navigate("/"); // redirect ke login
+      if (!user) navigate("/");
       else setUser(user);
     });
   }, [navigate]);
 
-  // handle logout
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Logout error:", error.message);
-      return;
-    }
+    if (error) return console.error("Logout error:", error.message);
     setUser(null);
     navigate("/");
   };
 
   // generate caption
-  const handleGenerate = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const caption = await generateCaption(image, keyword, language, style);
-      setResult(caption);
-    } catch (err) {
-      console.error(err);
-      setResult("Terjadi kesalahan waktu generate caption.");
+  const handleGenerate = async () => {
+  if (!image) return;
+  setLoading(true);
+  try {
+    const caption = await generateCaption(image, keyword, language, style);
+    setResult(caption);
+  } catch (err) {
+    console.error(err);
+    setResult("Terjadi kesalahan saat generate caption.");
+  }
+  setLoading(false);
+};
+
+
+  const handleSave = async () => {
+  if (!user || !result) return;
+
+  try {
+    setSaving(true);
+    console.log("Current user:", user);
+
+    const fileName = `${Date.now()}-${image.name}`;
+    console.log("Uploading file:", fileName);
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("captions")
+      .upload(fileName, image);
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError);
+      throw uploadError;
     }
-    setLoading(false);
-  };
+
+    const { data: publicUrl } = supabase.storage
+      .from("captions")
+      .getPublicUrl(fileName);
+
+    console.log("Public URL:", publicUrl);
+
+    const data = await saveCaption({
+      user,
+      caption: result,
+      imageUrl: publicUrl.publicUrl,
+    });
+
+    console.log("Save success:", data);
+
+    setImageUrl(publicUrl.publicUrl);
+    alert("Caption berhasil disimpan!");
+  } catch (err) {
+    console.error("Save error:", err.message);
+  } finally {
+    setSaving(false);
+  }
+};
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-6">
@@ -82,8 +123,17 @@ export default function HomePage() {
 
       {result && (
         <section className="mt-6 p-4 bg-base-200 rounded-lg shadow-sm">
-          <h2 className="text-lg font-medium mb-2">{t("result.title", "Generated Caption")}</h2>
-          <p className="text-sm leading-relaxed">{result}</p>
+          <h2 className="text-lg font-medium mb-2">
+            {t("result.title", "Generated Caption")}
+          </h2>
+          <p className="text-sm leading-relaxed mb-4">{result}</p>
+          <button
+            onClick={handleSave}
+            className="btn btn-success"
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Caption"}
+          </button>
         </section>
       )}
 
@@ -94,6 +144,9 @@ export default function HomePage() {
         >
           Logout
         </button>
+        <a href="/saved">
+          Saved Captions
+        </a>
       </footer>
     </div>
   );
