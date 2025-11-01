@@ -1,10 +1,6 @@
 import { useState } from "react";
 
 export default function TagModal({
-  user,
-  image,
-  result,
-  setImageUrl,
   selectedTags,
   setSelectedTags,
   onSave,
