@@ -35,6 +35,22 @@ export default function SavedPage({ user }) {
     };
 
     fetchCaptions();
+
+    const channel = supabase
+      .channel("public:captions")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "captions" },
+        (payload) => {
+          console.log("New caption inserted:", payload.new);
+          setCaptions((prev) => [payload.new, ...prev]);
+        }
+      )
+      .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
   }, [user, sortOption, tagFilter]);
 
   if (!user) return <p className="p-6 text-center">Loading...</p>;

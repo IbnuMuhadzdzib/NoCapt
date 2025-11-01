@@ -196,9 +196,6 @@ export default function HomePage() {
         >
           Logout
         </button>
-        <a href="/saved">
-          Saved Captions
-        </a>
       </footer>
     </div>
   );
