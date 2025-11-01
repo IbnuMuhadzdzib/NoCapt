@@ -9,6 +9,8 @@ import { generateCaption } from "../lib/gemini";
 import ToggleTheme from "../widgets/ToggleTheme";
 import Prompt from "../widgets/Prompt";
 import Dropdown from "../components/Dropdown";
+import SavedPage from "./SavedPage";
+import TagModal from "../components/TagModal";
 
 export default function HomePage() {
   const { t, i18n } = useTranslation();
@@ -23,7 +25,12 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
 
+
+  const openTagModal = () => {
+    document.getElementById("tagModal").showModal();
+  };
   // cek user login
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -83,6 +90,7 @@ export default function HomePage() {
       user,
       caption: result,
       imageUrl: publicUrl.publicUrl,
+      selectedTags,
     });
 
     console.log("Save success:", data);
@@ -128,7 +136,7 @@ export default function HomePage() {
           </h2>
           <p className="text-sm leading-relaxed mb-4">{result}</p>
           <button
-            onClick={handleSave}
+            onClick={openTagModal}
             className="btn btn-success"
             disabled={saving}
           >
@@ -156,6 +164,30 @@ export default function HomePage() {
 
         </section>
       )}
+
+<TagModal
+  user={user}
+  image={image}
+  result={result}
+  setImageUrl={setImageUrl}
+  selectedTags={selectedTags}
+  setSelectedTags={setSelectedTags}
+  onSave={handleSave}
+/>
+
+      <div className="drawer drawer-end">
+  <input id="my-drawer-5" type="checkbox" className="drawer-toggle" />
+  <div className="drawer-content">
+    {/* Page content here */}
+    <label htmlFor="my-drawer-5" className="drawer-button btn btn-primary">Saved Content</label>
+  </div>
+  <div className="drawer-side">
+    <label htmlFor="my-drawer-5" aria-label="close sidebar" className="drawer-overlay"></label>
+    <ul className="menu bg-base-200 min-h-full w-80 p-4">
+      <SavedPage user={user} />
+    </ul>
+  </div>
+</div>
 
       <footer className="pt-4 border-t border-base-300">
         <button

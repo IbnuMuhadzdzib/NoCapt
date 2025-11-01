@@ -13,5 +13,8 @@
     "concept": "Enter your caption concept here...",
     "language": "Enter language",
     "style": "Select writing style"
+  },
+  "savedPage": {
+    "noCaptions": "No saved captions yet."
   }
 }
